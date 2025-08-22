@@ -1,0 +1,38 @@
+CREATE VIEW vista_clientes_envios AS
+SELECT 
+    c.id AS id_cliente,
+    c.nombre AS cliente,
+    c.telefono,
+    e.id AS id_envio,
+    e.codigo_rastreo,
+    e.direccion_destino,
+    e.estado
+FROM clientes c
+JOIN envios e ON c.id = e.id_cliente;
+
+CREATE VIEW vista_paquetes AS
+SELECT 
+    p.id AS id_paquete,
+    p.descripcion,
+    p.peso,
+    p.dimensiones,
+    e.id AS id_envio,
+    e.codigo_rastreo,
+    c.nombre AS cliente
+FROM paquetes p
+JOIN envios e ON p.id_envio = e.id
+JOIN clientes c ON e.id_cliente = c.id;
+
+CREATE VIEW vista_seguimiento_envios AS
+SELECT 
+    e.id AS id_envio,
+    e.codigo_rastreo,
+    c.nombre AS cliente,
+    t.nombre AS transportista,
+    t.vehiculo,
+    s.ubicacion,
+    s.estado
+FROM seguimiento s
+JOIN envios e ON s.id_envio = e.id
+JOIN clientes c ON e.id_cliente = c.id
+JOIN transportistas t ON s.id_transportista = t.id;
