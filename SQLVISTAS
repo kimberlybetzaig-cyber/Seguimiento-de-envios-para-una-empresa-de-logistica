@@ -1,0 +1,22 @@
+-- Vista del último estado de cada paquete
+CREATE OR REPLACE VIEW vista_ultimo_estado AS
+SELECT DISTINCT ON (p.id_envio)
+    p.id_envio,
+    p.descripcion,
+    p.peso,
+    p.dimensiones,
+    s.ubicacion,
+    s.estado
+FROM paquetes p
+JOIN seguimiento s ON p.id_envio = s.id_envio
+ORDER BY p.id_envio, s.id_transportista DESC;
+
+CREATE OR REPLACE VIEW vista_en_transito AS
+SELECT 
+    p.id_envio,
+    p.descripcion,
+    s.ubicacion,
+    s.estado
+FROM paquetes p
+JOIN seguimiento s ON p.id_envio = s.id_envio
+WHERE s.estado = 'En tránsito';
